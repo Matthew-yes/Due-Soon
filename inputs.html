@@ -17,19 +17,34 @@
             <li class="navbar-item ">
                 <a href="" class=" text-decoration-none text-light">Schedule</a>
             </li>
-            <li class="navbar-item ">
-                <a href="survey.html" class=" text-decoration-none text-light">Survey</a>
-            </li>
         </ul>
     </nav>
 
     <form action=" " method="post">
         <fieldset>
             <label for="type">What is due soon?</label>
-
           <select name="previous_type" id="type">
             <option value="exam">Exam/Test</option>
             <option value="assignment">Assignment</option>
+          </select>
+
+            <br><br>
+            <label for="recommendationsLabel" id="recommendationsLabelID">Name of Assignment/Test</label>
+            <br>
+            <input id="recommendationsLabel" type="text" name="recommendations">
+
+            <br><br>
+            <label for="date">Due date:</label>
+            <input type="date" id="date" name="due-date" />
+
+            <br><br>
+            <label for="difficulty">How difficult do expect this assignment or exam to be?</label>
+          <select name="previous_difficulty" id="difficulty">
+            <option value="very_easy">Very easy</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="very_hard">Very Hard</option>
           </select>
         </fieldset>    
     </form>    
