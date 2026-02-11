@@ -1,9 +1,43 @@
-.navbar{
-    background-color: black;
+ * {
+    margin: 0;
+    padding:0;
+    font-family: 'Poppins', sans-serif;
+}
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 20px;
+    background: rgb(119, 203, 218);
+    display: flex;
+    align-items: center;
+    z-index: 99;
+}
+.logo {
+    font-size: 2em;
+    color: #fff;
+    
+}
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: white;
+    padding-top:77px;
+}
+/* Navigation Bar*/
+.navigation_bar{
+    position:fixed;
+    width:100%;
+    padding-top: 10px 10px;
+    background: rgb(119, 203, 218);
+    border: 2px  solid rgb(223, 234, 255);
 }
 a{
-    font-size:40px;
-    font-family:'Courier New', Courier, monospace;
+    text-decoration: none;
+    color:white;
+    font-size:15px;
     padding-left:75px;
     padding-top:50px;
     padding-right:75px;
@@ -11,5 +45,8 @@ a{
     
 }
 a:hover{
-    background-color: rgb(26, 26, 35);
+    background-color:  rgba(22, 126, 134, 0.493);
+}
+.spacing{
+    padding-top:50px;
 }
