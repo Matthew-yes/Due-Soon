@@ -26,11 +26,35 @@ body {
     background: white;
     padding-top:77px;
 }
+h1{
+    padding-top:50px;
+    padding-bottom:50px;
+    font-size:60px;
+    text-align:Center;
+}
+h2{
+    text-align:center;
+    padding-bottom:50px;
+}
+h4{
+    padding-top:20px;
+}
+.home_container{
+    background-color:rgb(119, 203, 218);
+    color:white;
+    height:380px;
+    border: 2px  solid rgb(223, 234, 255);
+    border-radius:10px;
+    padding-left:50px;
+    padding-top:50px;
+    font-size:30px;
+}
 /* Navigation Bar*/
 .navigation_bar{
     position:fixed;
     width:100%;
     padding-top: 10px 10px;
+    height:25px;
     background: rgb(119, 203, 218);
     border: 2px  solid rgb(223, 234, 255);
 }
@@ -39,7 +63,7 @@ a{
     color:white;
     font-size:15px;
     padding-left:75px;
-    padding-top:50px;
+    padding-top:10px;
     padding-right:75px;
     padding-bottom:10px;
     
@@ -47,6 +71,9 @@ a{
 a:hover{
     background-color:  rgba(22, 126, 134, 0.493);
 }
+.smallerspacing{
+    padding-top:40px;
+}
 .spacing{
-    padding-top:50px;
+    padding-top:100px;
 }
