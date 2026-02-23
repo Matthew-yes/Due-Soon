@@ -49,6 +49,9 @@ h4{
     padding-top:50px;
     font-size:30px;
 }
+fieldset{
+    border:none;
+}
 /* Navigation Bar*/
 .navigation_bar{
     position:fixed;
