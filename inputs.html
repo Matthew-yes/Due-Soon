@@ -7,46 +7,67 @@
     <title>DueSoon</title>
     <link rel="stylesheet" href="style2.css">
 </head>
-
 <body>
+    <script>
+        function saveData(){
+        if (typeof(Storage) !== "undefined") {
+            // Get Type
+            var TypeData = document.getElementById('type').value
 
+            // Get Name
+            var AssignmentNameData = document.getElementById('assignment_name').value;
+
+            // Get Date
+            var DateData = document.getElementById('date').value;
+
+            // Get Difficulty
+            var DifficultyData = document.getElementById('difficulty').value;
+
+            // Store Bird Entry (key = bird species, value = date,location, image)
+            const assignmentEntry = [{ 'Type': TypeData, 'Assignment_Name': AssignmentNameData, 'Date': DateData, 'Difficulty': DifficultyData}];
+            localStorage.setItem('user', JSON.stringify(assignmentEntry));
+            alert("Assignement added")
+        }
+      }
+    </script>
     <header>
-        <h1 class="logo">DueSoon</h1>
+        <div class="logo">DueSoon</div>
     </header>
 
     <div class="navigation_bar">
         <a href="">Home</a>
     </div>
-    <div class="spacing"></div>
+    <div class="smallerspacing"></div>
 
-    <form action=" " method="post">
+    <form>
         <fieldset>
             <label for="type">What is due soon?</label>
-            <select name="previous_type" id="type">
+            <select id="type">
                 <option value="exam">Exam/Test</option>
                 <option value="assignment">Assignment</option>
             </select>
 
-            <br><br>
-            <label for="recommendationsLabel" id="recommendationsLabelID">Name of Assignment/Test</label>
+            <div class="smallerspacing"></div>
+            <label for="assignment_name">Name of Assignment/Test</label>
             <br>
-            <input id="recommendationsLabel" type="text" name="recommendations">
+            <input id="assignment_name" type="text" required>
 
-            <br><br>
+            <div class="smallerspacing"></div>
             <label for="date">Due date:</label>
-            <input type="date" id="date" name="due-date" />
+            <input type="date" id="date" required>
 
-            <br><br>
+            <div class="smallerspacing"></div>
             <label for="difficulty">How difficult do expect this assignment or exam to be?</label>
-            <select name="previous_difficulty" id="difficulty">
+            <select id="difficulty">
                 <option value="very_easy">Very easy</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
                 <option value="very_hard">Very Hard</option>
             </select>
-            <br>
-            <button type="submit" class="btn">Submit</button>
+
+            <div class="smallerspacing"></div>
+            <button type="submit" class="btn" onclick="saveData()" >Submit</button>
         </fieldset>
     </form>
 </body>
