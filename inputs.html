@@ -1,98 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DueSoon</title>
-    <link rel="stylesheet" href="style2.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
     <script>
-      function saveData() {
-        if (typeof Storage !== "undefined") {
-          // Get Type
-          var TypeData = document.getElementById("type").value;
+        function saveData(){
+        if (typeof(Storage) !== "undefined") {
+            // Get Type
+            var TypeData = document.getElementById('type').value
 
-          // Get Name
-          var AssignmentNameData =
-            document.getElementById("assignment_name").value;
+            // Get Name
+            var AssignmentNameData = document.getElementById('assignment_name').value;
 
-          // Get Date
-          var DateData = document.getElementById("date").value;
+            // Get Date
+            var DateData = document.getElementById('date').value;
 
-          // Get Difficulty
-          var DifficultyData = document.getElementById("difficulty").value;
+            // Get Difficulty
+            var DifficultyData = document.getElementById('difficulty').value;
 
-          // Store Bird Entry (key = bird species, value = date,location, image)
-          const assignmentEntry = [
-            {
-              Type: TypeData,
-              Assignment_Name: AssignmentNameData,
-              Date: DateData,
-              Difficulty: DifficultyData,
-            },
-          ];
-          localStorage.setItem("user", JSON.stringify(assignmentEntry));
-          alert("Assignment added");
+            // Store Bird Entry (key = bird species, value = date,location, image)
+            const assignmentEntry = [{ 'Type': TypeData, 'Assignment_Name': AssignmentNameData, 'Date': DateData, 'Difficulty': DifficultyData}];
+            localStorage.setItem('user', JSON.stringify(assignmentEntry));
+            alert("Assignement added")
         }
       }
     </script>
     <header>
-      <div class="logo">DueSoon</div>
+        <div class="logo">DueSoon</div>
     </header>
 
     <div class="navigation_bar">
-      <a href="home.html">Home</a>
+        <a href="">Home</a>
     </div>
     <div class="smallerspacing"></div>
 
     <form>
-      <fieldset>
-        <label for="type">What is due soon?</label>
-        <select id="type">
-          <option value="exam">Exam/Test</option>
-          <option value="assignment">Assignment</option>
-        </select>
+        <fieldset>
+            <label for="type">What is due soon?</label>
+            <select id="type">
+                <option value="exam">Exam/Test</option>
+                <option value="assignment">Assignment</option>
+            </select>
 
-        <div class="smallerspacing"></div>
-        <label for="assignment_name">Name of Assignment/Test</label>
-        <br />
-        <input id="assignment_name" type="text" required />
+            <div class="smallerspacing"></div>
+            <label for="assignment_name">Name of Assignment/Test</label>
+            <br>
+            <input id="assignment_name" type="text" required>
 
-        <div class="smallerspacing"></div>
-        <label for="date">Due date:</label>
-        <input type="date" id="date" required />
+            <div class="smallerspacing"></div>
+            <label for="date">Due date:</label>
+            <input type="date" id="date" required>
 
-        <div class="smallerspacing"></div>
-        <label for="difficulty"
-          >How difficult do expect this assignment or exam to be?</label
-        >
-        <select id="difficulty">
-          <option value="very_easy">Very easy</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-          <option value="very_hard">Very Hard</option>
-        </select>
+            <div class="smallerspacing"></div>
+            <label for="difficulty">How difficult do expect this assignment or exam to be?</label>
+            <select id="difficulty">
+                <option value="very_easy">Very easy</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="very_hard">Very Hard</option>
+            </select>
 
-        <div class="smallerspacing"></div>
-        <button type="submit" class="btn" onclick="saveData()">Submit</button>
-      </fieldset>
+            <div class="smallerspacing"></div>
+            <button type="submit" class="btn" onclick="saveData()" >Submit</button>
+        </fieldset>
     </form>
-
-    <script type="module">
-      import { auth } from "./firebase.js";
-      import {
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-
-      // Require sign in to access this page
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          window.location.href = "login.html";
-        }
-      });
-    </script>
-  </body>
-</html>
+</body>
