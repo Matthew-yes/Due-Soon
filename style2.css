@@ -25,6 +25,32 @@ body {
   background: white;
   padding-top: 77px;
 }
+h1{
+    padding-top:50px;
+    padding-bottom:50px;
+    font-size:60px;
+    text-align:Center;
+}
+h2{
+    text-align:center;
+    padding-bottom:50px;
+}
+h4{
+    padding-top:20px;
+}
+.home_container{
+    background-color:rgb(119, 203, 218);
+    color:white;
+    height:380px;
+    border: 2px  solid rgb(223, 234, 255);
+    border-radius:10px;
+    padding-left:50px;
+    padding-top:50px;
+    font-size:30px;
+}
+fieldset{
+    border:none;
+}
 /* Navigation Bar*/
 .navigation_bar {
   position: fixed;
@@ -48,3 +74,4 @@ a:hover {
 .spacing {
   padding-top: 50px;
 }
+
