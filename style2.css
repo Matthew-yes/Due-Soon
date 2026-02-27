@@ -1,50 +1,82 @@
-* {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", sans-serif;
+ * {
+    margin: 0;
+    padding:0;
+    font-family: 'Poppins', sans-serif;
 }
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px 20px;
-  background: rgb(119, 203, 218);
-  display: flex;
-  align-items: center;
-  z-index: 99;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 20px;
+    background: rgb(119, 203, 218);
+    display: flex;
+    align-items: center;
+    z-index: 99;
 }
 .logo {
-  font-size: 2em;
-  color: #fff;
+    font-size: 2em;
+    color: #fff;
+    
 }
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: white;
-  padding-top: 77px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: white;
+    padding-top:77px;
+}
+h1{
+    padding-top:50px;
+    padding-bottom:50px;
+    font-size:60px;
+    text-align:Center;
+}
+h2{
+    text-align:center;
+    padding-bottom:50px;
+}
+h4{
+    padding-top:20px;
+}
+.home_container{
+    background-color:rgb(119, 203, 218);
+    color:white;
+    height:380px;
+    border: 2px  solid rgb(223, 234, 255);
+    border-radius:10px;
+    padding-left:50px;
+    padding-top:50px;
+    font-size:30px;
+}
+fieldset{
+    border:none;
 }
 /* Navigation Bar*/
-.navigation_bar {
-  position: fixed;
-  width: 100%;
-  padding-top: 10px 10px;
-  background: rgb(119, 203, 218);
-  border: 2px solid rgb(223, 234, 255);
+.navigation_bar{
+    position:fixed;
+    width:100%;
+    padding-top: 10px 10px;
+    height:25px;
+    background: rgb(119, 203, 218);
+    border: 2px  solid rgb(223, 234, 255);
 }
-a {
-  text-decoration: none;
-  color: white;
-  font-size: 15px;
-  padding-left: 75px;
-  padding-top: 50px;
-  padding-right: 75px;
-  padding-bottom: 10px;
+a{
+    text-decoration: none;
+    color:white;
+    font-size:15px;
+    padding-left:75px;
+    padding-top:10px;
+    padding-right:75px;
+    padding-bottom:10px;
+    
 }
-a:hover {
-  background-color: rgba(22, 126, 134, 0.493);
+a:hover{
+    background-color:  rgba(22, 126, 134, 0.493);
 }
-.spacing {
-  padding-top: 50px;
+.smallerspacing{
+    padding-top:40px;
+}
+.spacing{
+    padding-top:100px;
 }
