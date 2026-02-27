@@ -1,44 +1,67 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-
-<header>
-    <h1 class="logo">DueSoon</h1>
-</header>
-    <div class="content"> 
-        <h2 class="welcome">Welcome to DueSoon!</h2>
-        <h3 class='description'>Don't do it later, it's due soon!</h3>
+  <body>
+    <header>
+      <h1 class="logo">DueSoon</h1>
+    </header>
+    <div class="content">
+      <h2 class="welcome">Welcome to DueSoon!</h2>
+      <h3 class="description">Don't do it later, it's due soon!</h3>
     </div>
 
     <div class="wrapper">
-        <form action="">
-            <h1>Login</h1>
-            <div class = "input-box">
-                <input type="text" placeholder="Email" required>
-            </div>
-            <div class = "input-box">
-                <input type="password" placeholder="Password" required>        
-            </div>
+      <form id="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" id="email" placeholder="Email" required />
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </div>
 
-            <div class="remember-forgot">
-                <label><input type="checkbox">Remember me</label>
-                <a href="resetpass.html">Forgot Password?</a>
-            </div>
+        <div class="remember-forgot">
+          <label><input type="checkbox" />Remember me</label>
+          <a href="resetpass.html">Forgot Password?</a>
+        </div>
 
-            <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn">Login</button>
 
-            <div class = "register-link">
-                <p>Don't have an account? <a href="register.html">Register</a></p>
-
-        </form>
+        <div class="register-link">
+          <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+      </form>
     </div>
-</body>
+    <script type="module">
+      import { auth, signInWithEmailAndPassword } from "./firebase.js";
+
+      const form = document.getElementById("loginForm");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // prevents page reload
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          alert("Login successful!");
+          window.location.href = "home.html";
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+    </script>
+  </body>
 </html>

@@ -1,35 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DueSoon</title>
-    <link rel="stylesheet" href="style2.css">
-</head>
+    <link rel="stylesheet" href="style2.css" />
+  </head>
 
-<body>
-
+  <body>
     <header>
-        <div class="logo">DueSoon</div>
+      <div class="logo">DueSoon</div>
     </header>
 
     <div class="navigation_bar">
-        <a href="home.html">Home</a>
-        <a href="inputs.html">Inputs</a>
-        <a href="">Schedule</a>
-        <a href="">Reminder</a>
+      <a href="home.html">Home</a>
+      <a href="inputs.html">Inputs</a>
+      <a href="">Schedule</a>
+      <a href="">Reminder</a>
     </div>
     <div class="spacing"></div>
-    <h1>Welcome to Due Soon </h1>
-    <h2>A Website that can help track and schedule your studying and assignments!</h2>
-    <div class="spacing"></div><div class="spacing"></div>
+    <h1>Welcome to Due Soon</h1>
+    <h2>
+      A Website that can help track and schedule your studying and assignments!
+    </h2>
+    <div class="spacing"></div>
+    <div class="spacing"></div>
 
     <div class="home_container">
-        <h3>How to get started</h3>
-        <div class="smallerspacing"></div>
-        <h4>1. Enter what you have to do soon in the Inputs Page, so we can get started generating schedules. </h4>
-        <h4>2. View your generated schedules on the Schedule Page.</h4>
-        <h4>3. View the Reminder Page to see when things are due soon. </h4>
+      <h3>How to get started</h3>
+      <div class="smallerspacing"></div>
+      <h4>
+        1. Enter what you have to do soon in the Inputs Page, so we can get
+        started generating schedules.
+      </h4>
+      <h4>2. View your generated schedules on the Schedule Page.</h4>
+      <h4>3. View the Reminder Page to see when things are due soon.</h4>
     </div>
-</body>
+
+    <button id="logoutBtn">Logout</button>
+
+    <script type="module">
+      import { auth } from "./firebase.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+      // Require sign in to access this page
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          window.location.href = "login.html";
+        }
+      });
+
+      // Logout
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          window.location.href = "login.html";
+        } catch (error) {
+          console.error("Logout error:", error);
+        }
+      });
+    </script>
+  </body>
+</html>
