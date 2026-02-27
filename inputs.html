@@ -35,9 +35,11 @@
     </header>
 
     <div class="navigation_bar">
-        <a href="">Home</a>
+        <a href="home.html">Home</a>
+        <a href="inputs.html">Inputs</a>
+        <a href="">Schedule</a>
+        <a href="">Reminder</a>
     </div>
-    <div class="smallerspacing"></div>
 
     <form>
         <fieldset>
@@ -70,4 +72,19 @@
             <button type="submit" class="btn" onclick="saveData()" >Submit</button>
         </fieldset>
     </form>
+    <script type="module">
+      import { auth } from "./firebase.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+      // Require sign in to access this page
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          window.location.href = "login.html";
+        }
+      });
+    </script>
 </body>
+
