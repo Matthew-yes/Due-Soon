@@ -7,29 +7,9 @@
     <title>DueSoon</title>
     <link rel="stylesheet" href="style2.css">
 </head>
+
 <body>
-    <script>
-        function saveData(){
-        if (typeof(Storage) !== "undefined") {
-            // Get Type
-            var TypeData = document.getElementById('type').value
 
-            // Get Name
-            var AssignmentNameData = document.getElementById('assignment_name').value;
-
-            // Get Date
-            var DateData = document.getElementById('date').value;
-
-            // Get Difficulty
-            var DifficultyData = document.getElementById('difficulty').value;
-
-            // Store Bird Entry (key = bird species, value = date,location, image)
-            const assignmentEntry = [{ 'Type': TypeData, 'Assignment_Name': AssignmentNameData, 'Date': DateData, 'Difficulty': DifficultyData}];
-            localStorage.setItem('user', JSON.stringify(assignmentEntry));
-            alert("Assignement added")
-        }
-      }
-    </script>
     <header>
         <div class="logo">DueSoon</div>
     </header>
@@ -40,9 +20,8 @@
         <a href="">Schedule</a>
         <a href="">Reminder</a>
     </div>
-    <div class="smallerspacing"></div>
-    
-    <form>
+    <div class="spacing"></div>
+    <form id="assignmentForm">
         <fieldset>
             <label for="type">What is due soon?</label>
             <select id="type">
@@ -70,23 +49,59 @@
             </select>
 
             <div class="smallerspacing"></div>
-            <button type="submit" class="btn" onclick="saveData()" >Submit</button>
+            <button type="submit" class="btn">Submit</button>
         </fieldset>
-    </form>
+    </form id="assignmentForm">
+
+
     <script type="module">
-      import { auth } from "./firebase.js";
-      import {
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-      // Require sign in to access this page
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          window.location.href = "login.html";
-        }
-      });
+        import { auth } from "./firebase.js";
+        import {
+            onAuthStateChanged,
+            signOut,
+        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+        let currentUserId=null;
+
+        // Require sign in to access this page
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            }
+            else{
+                currentUserId=user.uid;
+            }
+        });
+        //Add Assignments
+        import { db, collection, addDoc } from "./firebase.js";
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById('assignmentForm');
+
+            console.log("Form found:", form);
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const TypeData = document.getElementById('type').value;
+                const AssignmentNameData = document.getElementById('assignment_name').value;
+                const DateData = document.getElementById('date').value;
+                const DifficultyData = document.getElementById('difficulty').value;
+
+                try {
+                    await addDoc(collection(db, "users", currentUserId, "assignments"), {
+                        TypeData,
+                        AssignmentNameData,
+                        DateData,
+                        DifficultyData
+                    });
+
+                    alert("Assignment added");
+                    form.reset();
+                } catch (e) {
+                    console.error("Error adding assignment: ", e);
+                }
+            });
+        });
     </script>
+
 </body>
-
-
