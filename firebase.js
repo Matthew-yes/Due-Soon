@@ -10,7 +10,13 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+import { 
+  getFirestore,   
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy, } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -33,4 +39,9 @@ export {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
 };
