@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DueSoon</title>
+    <link rel="stylesheet" href="style2.css" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js"></script>
+    <script type="module">
+  import { auth, db, collection, getDocs } from "./firebase.js";
+  import {
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const calendarEl = document.getElementById("calendar");
+
+    const snapshot = await getDocs(
+      collection(db, "users", user.uid, "assignments")
+    );
+
+    const events = [];
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+
+      events.push({
+        title: data.AssignmentNameData,
+        start: data.DateData,
+      });
+    });
+
+    console.log(events);
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: "dayGridMonth",
+      events: events,
+    });
+
+    calendar.render();
+  });
+</script>
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="logo">DueSoon</div>
+    </header>
+
+    <div class="navigation_bar">
+      <a href="home.html">Home</a>
+      <a href="inputs.html">Inputs</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="">Reminder</a>
+    </div>
+    <div class="spacing"></div>
+    <div id="calendar"></div>
+    <div class="calendar-container">
+</div>
+  </body>
+</html>

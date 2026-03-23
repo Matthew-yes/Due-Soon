@@ -80,3 +80,78 @@ a:hover{
 .spacing{
     padding-top:100px;
 }
+.calendar-container {
+  width: 80%;          /* control width */
+  max-width: 1000px;   /* prevents it from getting too big */
+  margin: 0 auto;      /* center horizontally */
+}
+
+#calendar {
+  height: 700px;       /* control height */
+}
+
+/* Overall calendar */
+.fc {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header (month + buttons) */
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.fc-button {
+  background-color: #4f46e5 !important;
+  border: none !important;
+}
+
+.fc-button:hover {
+  background-color: #3730a3 !important;
+}
+
+/* Day cells */
+.fc-daygrid-day {
+  border: 1px solid #e5e7eb;
+}
+
+/* Today highlight */
+.fc-day-today {
+  background-color: #e0f2fe !important;
+}
+
+/* Event styling */
+.fc-event {
+  background-color: #10b981 !important; /* green */
+  border: none !important;
+  font-size: 0.85rem;
+  padding: 2px;
+}
+
+.fc-daygrid-event {
+  font-size: 0.75rem;
+}
+
+.fc-daygrid-day-number {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.calendar-container {
+  margin-top: 20px;
+}
+
+.fc {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.fc-col-header-cell {
+  background-color: #4f46e5;
+  color: white;
+  font-weight: 600;
+  padding: 8px 0;
+}
+

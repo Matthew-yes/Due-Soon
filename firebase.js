@@ -10,13 +10,14 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-import { 
-  getFirestore,   
+import {
+  getFirestore,
   collection,
   addDoc,
   getDocs,
   query,
-  orderBy, } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -33,6 +34,32 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+async function fetchEvents() {
+  const user = auth.currentUser;
+
+  if (!user) {
+    console.log("No user logged in");
+    return [];
+  }
+
+  const snapshot = await getDocs(
+    collection(db, "users", user.uid, "assignments"),
+  );
+
+  const events = [];
+
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+
+    events.push({
+      title: data.AssignmentNameData,
+      start: data.DateData,
+    });
+  });
+
+  return events;
+}
+
 export {
   auth,
   db,
@@ -44,4 +71,5 @@ export {
   getDocs,
   query,
   orderBy,
+  fetchEvents,
 };
