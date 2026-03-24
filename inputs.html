@@ -39,13 +39,23 @@
             <input type="date" id="date" required>
 
             <div class="smallerspacing"></div>
-            <label for="difficulty">How difficult do expect this assignment or exam to be?</label>
+            <label for="difficulty">How difficult do expect this assignment/test to be?</label>
             <select id="difficulty">
                 <option value="very_easy">Very easy</option>
                 <option value="easy">Easy</option>
                 <option value="medium">Medium</option>
                 <option value="hard">Hard</option>
                 <option value="very_hard">Very Hard</option>
+            </select>
+
+            <div class="smallerspacing"></div>
+            <label for="time">How long do you expect to work on this</label>
+            <select id="time">
+                <option value="fifteen_minutes">15 minutes</option>
+                <option value="thirty_minutes">30 minutes</option>
+                <option value="one_hour">1 hour</option>
+                <option value="two_hours">2 hours</option>
+                <option value="more_hours">2+ hours</option>
             </select>
 
             <div class="smallerspacing"></div>
@@ -86,13 +96,16 @@
                 const AssignmentNameData = document.getElementById('assignment_name').value;
                 const DateData = document.getElementById('date').value;
                 const DifficultyData = document.getElementById('difficulty').value;
+                const TimeData = document.getElementById('time').value;
+
 
                 try {
                     await addDoc(collection(db, "users", currentUserId, "assignments"), {
                         TypeData,
                         AssignmentNameData,
                         DateData,
-                        DifficultyData
+                        DifficultyData,
+                        TimeData
                     });
 
                     alert("Assignment added");
