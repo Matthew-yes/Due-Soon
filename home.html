@@ -2,119 +2,126 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DueSoon</title>
-    <link rel="stylesheet" href="style2.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DueSoon</title>
+  <link rel="stylesheet" href="style2.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
 
-     <header>
-        <div class="logo">DueSoon</div>
-    </header>
+  <header>
+    <div class="logo">DueSoon</div>
+    <button type="button" class="icon_button" onclick="open_reminder()">
+      <span class="material-icons">notifications</span>
+      <span class="icon-button__badge"></span>2
+    </button>
+    <div class="reminder_popup" id="reminder_popup">
 
-    <div class="navigation_bar">
-        <a href="home.html">Home</a>
-        <a href="inputs.html">Inputs</a>
-        <a href="calendar.html">Calendar</a>
-        <a href="">Reminder</a>
     </div>
-    <div class="spacing"></div>
-    <form id="assignmentForm">
-        <fieldset>
-            <label for="type">What is due soon?</label>
-            <select id="type">
-                <option value="exam">Exam/Test</option>
-                <option value="assignment">Assignment</option>
-            </select>
+  </header>
 
-            <div class="smallerspacing"></div>
-            <label for="assignment_name">Name of Assignment/Test</label>
-            <br>
-            <input id="assignment_name" type="text" required>
+  <div class="navigation_bar">
+    <a href="home.html">Home</a>
+    <a href="inputs.html">Inputs</a>
+    <a href="calendar.html">Calendar</a>
+  </div>
+  <div class="spacing"></div>
+  <h1>Welcome to Due Soon </h1>
+  <h2>A Website that can help track and schedule your studying and assignments!</h2>
+  <div class="spacing"></div>
+  <div class="spacing"></div>
 
-            <div class="smallerspacing"></div>
-            <label for="date">Due date:</label>
-            <input type="date" id="date" required>
-
-            <div class="smallerspacing"></div>
-            <label for="difficulty">How difficult do expect this assignment/test to be?</label>
-            <select id="difficulty">
-                <option value="very_easy">Very easy</option>
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-                <option value="very_hard">Very Hard</option>
-            </select>
-
-            <div class="smallerspacing"></div>
-            <label for="time">How long do you expect to work on this</label>
-            <select id="time">
-                <option value="fifteen_minutes">15 minutes</option>
-                <option value="thirty_minutes">30 minutes</option>
-                <option value="one_hour">1 hour</option>
-                <option value="two_hours">2 hours</option>
-                <option value="more_hours">2+ hours</option>
-            </select>
-
-            <div class="smallerspacing"></div>
-            <button type="submit" class="btn">Submit</button>
-        </fieldset>
-    </form id="assignmentForm">
+  <div class="home_container">
+    <h3>How to get started</h3>
+    <div class="smallerspacing"></div>
+    <h4>1. Enter what you have to do soon in the Inputs Page, so we can get started generating schedules. </h4>
+    <h4>2. View your generated schedules on the Schedule Page.</h4>
+    <h4>3. View the Reminder Page to see when things are due soon. </h4>
+  </div>
+  <button id="logoutBtn">Logout</button>
 
 
-    <script type="module">
+  <script type="module">
+    import { auth, db, collection, getDocs, query, orderBy, where } from "./firebase.js";
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-        import { auth } from "./firebase.js";
-        import {
-            onAuthStateChanged,
-            signOut,
-        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-        let currentUserId=null;
+    let currentUser = null;
 
-        // Require sign in to access this page
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "login.html";
-            }
-            else{
-                currentUserId=user.uid;
-            }
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        currentUser = user; // Store the user so open_reminder can use it
+      }
+    });
+
+    // Logout
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    });
+
+    // Define the function inside the module
+    async function open_reminder() {
+      const reminder_popup = document.getElementById("reminder_popup");
+
+      // Toggle logic
+      if (reminder_popup.classList.contains("open_reminder_popup")) {
+        reminder_popup.classList.remove("open_reminder_popup");
+        return;
+      }
+
+      reminder_popup.classList.add("open_reminder_popup");
+
+      if (!currentUser) return;
+
+      try {
+
+        // 1. Calculate the date strings (YYYY-MM-DD)
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        const threeDaysLater = new Date();
+        threeDaysLater.setDate(today.getDate() + 3);
+        const threeDaysLaterStr = threeDaysLater.toISOString().split('T')[0];
+
+        const assignmentsRef = collection(db, "users", currentUser.uid, "assignments");
+
+        // 2. Create the query with two 'where' clauses for the range
+        const q = query(
+          assignmentsRef,
+          where("DateData", ">=", todayStr),
+          where("DateData", "<=", threeDaysLaterStr),
+          orderBy("DateData", "asc")
+        );
+
+        // Use await to wait for the data!
+        const querySnapshot = await getDocs(q);
+
+        // Clear previous content before appending new data
+        reminder_popup.innerHTML = "";
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const p = document.createElement("p");
+          p.innerText = `${data.AssignmentNameData} is due on ${data.DateData}`;
+          reminder_popup.appendChild(p);
         });
-        //Add Assignments
-        import { db, collection, addDoc } from "./firebase.js";
+      } catch (error) {
+        console.error("Error fetching reminders:", error);
+      }
+    }
 
-        window.addEventListener("DOMContentLoaded", () => {
-            const form = document.getElementById('assignmentForm');
+    // CRITICAL: Attach the function to the window so the HTML button can see it
+    window.open_reminder = open_reminder;
 
-            console.log("Form found:", form);
-
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const TypeData = document.getElementById('type').value;
-                const AssignmentNameData = document.getElementById('assignment_name').value;
-                const DateData = document.getElementById('date').value;
-                const DifficultyData = document.getElementById('difficulty').value;
-                const TimeData = document.getElementById('time').value;
-
-
-                try {
-                    await addDoc(collection(db, "users", currentUserId, "assignments"), {
-                        TypeData,
-                        AssignmentNameData,
-                        DateData,
-                        DifficultyData,
-                        TimeData
-                    });
-
-                    alert("Assignment added");
-                    form.reset();
-                } catch (e) {
-                    console.error("Error adding assignment: ", e);
-                }
-            });
-        });
-    </script>
-
+  </script>
 </body>
