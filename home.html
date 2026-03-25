@@ -10,7 +10,7 @@
 
 <body>
 
-    <header>
+     <header>
         <div class="logo">DueSoon</div>
     </header>
 
@@ -21,43 +21,100 @@
         <a href="">Reminder</a>
     </div>
     <div class="spacing"></div>
-    <h1>Welcome to Due Soon </h1>
-    <h2>A Website that can help track and schedule your studying and assignments!</h2>
-    <div class="spacing"></div><div class="spacing"></div>
+    <form id="assignmentForm">
+        <fieldset>
+            <label for="type">What is due soon?</label>
+            <select id="type">
+                <option value="exam">Exam/Test</option>
+                <option value="assignment">Assignment</option>
+            </select>
 
-    <div class="home_container">
-        <h3>How to get started</h3>
-        <div class="smallerspacing"></div>
-        <h4>1. Enter what you have to do soon in the Inputs Page, so we can get started generating schedules. </h4>
-        <h4>2. View your generated schedules on the Schedule Page.</h4>
-        <h4>3. View the Reminder Page to see when things are due soon. </h4>
-    </div>
-     <button id="logoutBtn">Logout</button>
+            <div class="smallerspacing"></div>
+            <label for="assignment_name">Name of Assignment/Test</label>
+            <br>
+            <input id="assignment_name" type="text" required>
+
+            <div class="smallerspacing"></div>
+            <label for="date">Due date:</label>
+            <input type="date" id="date" required>
+
+            <div class="smallerspacing"></div>
+            <label for="difficulty">How difficult do expect this assignment/test to be?</label>
+            <select id="difficulty">
+                <option value="very_easy">Very easy</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="very_hard">Very Hard</option>
+            </select>
+
+            <div class="smallerspacing"></div>
+            <label for="time">How long do you expect to work on this</label>
+            <select id="time">
+                <option value="fifteen_minutes">15 minutes</option>
+                <option value="thirty_minutes">30 minutes</option>
+                <option value="one_hour">1 hour</option>
+                <option value="two_hours">2 hours</option>
+                <option value="more_hours">2+ hours</option>
+            </select>
+
+            <div class="smallerspacing"></div>
+            <button type="submit" class="btn">Submit</button>
+        </fieldset>
+    </form id="assignmentForm">
+
 
     <script type="module">
-      import { auth } from "./firebase.js";
-      import {
-        onAuthStateChanged,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-      // Require sign in to access this page
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          window.location.href = "login.html";
-        }
-      });
+        import { auth } from "./firebase.js";
+        import {
+            onAuthStateChanged,
+            signOut,
+        } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+        let currentUserId=null;
 
-      // Logout
-      const logoutBtn = document.getElementById("logoutBtn");
+        // Require sign in to access this page
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "login.html";
+            }
+            else{
+                currentUserId=user.uid;
+            }
+        });
+        //Add Assignments
+        import { db, collection, addDoc } from "./firebase.js";
 
-      logoutBtn.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          window.location.href = "login.html";
-        } catch (error) {
-          console.error("Logout error:", error);
-        }
-      });
+        window.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById('assignmentForm');
+
+            console.log("Form found:", form);
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const TypeData = document.getElementById('type').value;
+                const AssignmentNameData = document.getElementById('assignment_name').value;
+                const DateData = document.getElementById('date').value;
+                const DifficultyData = document.getElementById('difficulty').value;
+                const TimeData = document.getElementById('time').value;
+
+
+                try {
+                    await addDoc(collection(db, "users", currentUserId, "assignments"), {
+                        TypeData,
+                        AssignmentNameData,
+                        DateData,
+                        DifficultyData,
+                        TimeData
+                    });
+
+                    alert("Assignment added");
+                    form.reset();
+                } catch (e) {
+                    console.error("Error adding assignment: ", e);
+                }
+            });
+        });
     </script>
+
 </body>
