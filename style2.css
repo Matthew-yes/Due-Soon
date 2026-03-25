@@ -155,3 +155,29 @@ a:hover{
   padding: 8px 0;
 }
 
+.icon_button{
+    position: absolute;
+    right:50px;
+    top:15px;
+    background-color:white;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:50%
+
+}
+.reminder_popup{
+    position: absolute;
+    height:800px;
+    width:200px;
+    background-color:rgb(223, 234, 255);
+    border:solid;
+    border-color:rgb(78, 78, 78);
+    border-width:2px;
+    right:90px;
+    top:80px;
+    visibility:hidden;
+}
+.open_reminder_popup{
+    visibility:visible;
+}
