@@ -19,7 +19,6 @@ import {
   orderBy,
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBa7ToJfMpyTJVA_94SQMKlACtr4_I8Ku4",
   authDomain: "duesoon-f195b.firebaseapp.com",
@@ -60,6 +59,60 @@ async function fetchEvents() {
   return events;
 }
 
+function generateStudyPlan({ AssignmentNameData, DateData, DifficultyData, HoursData }) {
+  const dueDate = new Date(DateData);
+
+  const numSessions = Math.ceil(HoursData);
+
+  const windowMap = {
+    very_hard: 14,
+    hard: 7,
+    medium: 5,
+    easy: 3,
+    very_easy: 2,
+  };
+
+  let windowDays = windowMap[DifficultyData];
+
+  windowDays = Math.max(windowDays, numSessions);
+
+  const studyPlan = [];
+
+  for (let i = 0; i < numSessions; i++) {
+    let offset;
+
+    if (numSessions === 1) {
+      offset = 1;
+    } else {
+      const position = (i / (numSessions - 1)) * (windowDays - 1);
+      offset = Math.round(position) + 1;
+    }
+
+    const studyDate = new Date(dueDate);
+    studyDate.setDate(dueDate.getDate() - offset);
+
+    studyPlan.push({
+      title: `Study: ${AssignmentNameData}`,
+      date: studyDate.toISOString().split("T")[0],
+      studyTime: 1,
+      completed: false,
+    });
+  }
+
+  return studyPlan;
+}
+
+async function addStudySessions(userId, assignmentId, data) {
+  const studyPlan = generateStudyPlan(data);
+
+  for (const session of studyPlan) {
+    await addDoc(collection(db, "users", userId, "studySessions"), {
+      ...session,
+      assignmentId: assignmentId,
+    });
+  }
+}
+
 export {
   auth,
   db,
@@ -72,4 +125,5 @@ export {
   query,
   orderBy,
   fetchEvents,
+  addStudySessions,
 };
