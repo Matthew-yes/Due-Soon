@@ -17,6 +17,7 @@ import {
   getDocs,
   query,
   orderBy,
+  where
 } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -126,4 +127,5 @@ export {
   orderBy,
   fetchEvents,
   addStudySessions,
+  where
 };
