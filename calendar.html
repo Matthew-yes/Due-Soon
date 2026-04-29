@@ -18,6 +18,9 @@
         getDocs,
         doc,
         updateDoc,
+        deleteDoc,
+        query,
+        where,
       } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
@@ -40,9 +43,11 @@
           const data = doc.data();
 
           assignmentEvents.push({
+            id: doc.id,
             title: `📌 ${data.AssignmentNameData}`,
             start: data.DateData,
             color: "red",
+            extendedProps: { type: "assignment" },
           });
         });
 
@@ -60,6 +65,10 @@
             title: `${data.title} (${data.studyTime}h)`,
             start: data.date,
             color: data.completed ? "green" : "blue",
+            extendedProps: {
+              type: "study",
+              assignmentId: data.assignmentId, // ⭐ ADD THIS
+            },
           });
         });
 
@@ -70,17 +79,51 @@
           eventClick: async function (info) {
             const event = info.event;
 
-            if (!event.id) return;
+            const confirmDelete = confirm(`Delete "${event.title}"?`);
 
-            const newCompleted = event.backgroundColor !== "green";
+            if (!confirmDelete) return;
 
-            event.setProp("backgroundColor", newCompleted ? "green" : "blue");
+            // STUDY SESSION
+            if (event.extendedProps.type !== "assignment") {
+              const ref = doc(db, "users", user.uid, "studySessions", event.id);
+              await deleteDoc(ref);
+            }
 
-            const ref = doc(db, "users", user.uid, "studySessions", event.id);
+            // ASSIGNMENT
+            else {
+              // delete assignment from Firebase
+              const ref = doc(db, "users", user.uid, "assignments", event.id);
+              await deleteDoc(ref);
 
-            await updateDoc(ref, {
-              completed: newCompleted,
-            });
+              // delete study sessions from Firebase
+              const q = query(
+                collection(db, "users", user.uid, "studySessions"),
+                where("assignmentId", "==", event.id),
+              );
+
+              const snapshot = await getDocs(q);
+
+              const deletes = snapshot.docs.map((docSnap) =>
+                deleteDoc(docSnap.ref),
+              );
+
+              await Promise.all(deletes);
+
+              // remove all related events from UI
+              const allEvents = calendar.getEvents();
+
+              allEvents.forEach((e) => {
+                if (
+                  e.id === event.id || // assignment
+                  e.extendedProps.assignmentId === event.id // study sessions
+                ) {
+                  e.remove();
+                }
+              });
+            }
+
+            // Remove from calendar UI
+            event.remove();
           },
         });
 
