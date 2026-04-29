@@ -1,134 +1,67 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DueSoon</title>
-    <link rel="stylesheet" href="style2.css" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
     <header>
-      <div class="logo">DueSoon</div>
+      <h1 class="logo">DueSoon</h1>
     </header>
-
-    <div class="navigation_bar">
-      <a href="home.html">Home</a>
-      <a href="inputs.html">Inputs</a>
-      <a href="calendar.html">Calendar</a>
+    <div class="content">
+      <h2 class="welcome">Welcome to DueSoon!</h2>
+      <h3 class="description">Don't do it later, it's due soon!</h3>
     </div>
-    <div class="spacing"></div>
-    <form id="assignmentForm">
-      <fieldset>
-        <label for="type">What is due soon?</label>
-        <select id="type">
-          <option value="exam">Exam/Test</option>
-          <option value="assignment">Assignment</option>
-        </select>
 
-        <div class="smallerspacing"></div>
-        <label for="assignment_name">Name of Assignment/Test</label>
-        <br />
-        <input id="assignment_name" type="text" required />
+    <div class="wrapper">
+      <form id="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" id="email" placeholder="Email" required />
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+        </div>
 
-        <div class="smallerspacing"></div>
-        <label for="date">Due date:</label>
-        <input type="date" id="date" required />
+        <div class="remember-forgot">
+          <label><input type="checkbox" />Remember me</label>
+          <a href="resetpass.html">Forgot Password?</a>
+        </div>
 
-        <div class="smallerspacing"></div>
-        <label for="difficulty"
-          >How difficult do expect this assignment/test to be?</label
-        >
-        <select id="difficulty">
-          <option value="very_easy">Very easy</option>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-          <option value="very_hard">Very Hard</option>
-        </select>
+        <button type="submit" class="btn">Login</button>
 
-        <div class="smallerspacing"></div>
-        <label for="time">How long do you expect to work on this</label>
-        <br />
-        <input
-          id="hours"
-          type="number"
-          min="0.5"
-          step="0.5"
-          placeholder="e.g. 5"
-          required
-        />
-
-        <div class="smallerspacing"></div>
-        <button type="submit" class="btn">Submit</button>
-      </fieldset>
-    </form>
-
+        <div class="register-link">
+          <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+      </form>
+    </div>
     <script type="module">
-      import {
-        auth,
-        db,
-        collection,
-        addDoc,
-        addStudySessions,
-      } from "./firebase.js";
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+      import { auth, signInWithEmailAndPassword } from "./firebase.js";
 
-      //Limit date
-      const dateInput = document.getElementById('date');
-      const today = new Date().toISOString().split('T')[0];
-      dateInput.setAttribute('min', today);
+      const form = document.getElementById("loginForm");
 
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault(); // prevents page reload
 
-      let currentUserId = null;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
 
-      // Auth check
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          window.location.href = "login.html";
-        } else {
-          currentUserId = user.uid;
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          alert("Login successful!");
+          window.location.href = "home.html";
+        } catch (error) {
+          alert(error.message);
         }
-      });
-
-      window.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("assignmentForm");
-
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          const TypeData = document.getElementById("type").value;
-          const AssignmentNameData =
-            document.getElementById("assignment_name").value;
-          const DateData = document.getElementById("date").value;
-          const DifficultyData = document.getElementById("difficulty").value;
-          const HoursData = parseFloat(document.getElementById("hours").value);
-
-          try {
-            const assignmentRef = await addDoc(
-              collection(db, "users", currentUserId, "assignments"),
-              {
-                TypeData,
-                AssignmentNameData,
-                DateData,
-                DifficultyData,
-                HoursData,
-              },
-            );
-
-            await addStudySessions(currentUserId, assignmentRef.id, {
-              AssignmentNameData,
-              DateData,
-              DifficultyData,
-              HoursData,
-            });
-
-            alert("Assignment + study plan created!");
-            form.reset();
-          } catch (e) {
-            console.error("Error:", e);
-          }
-        });
       });
     </script>
   </body>
