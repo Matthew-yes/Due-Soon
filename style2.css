@@ -23,7 +23,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: white;
+    background: linear-gradient(180deg, #f7fafc 0%, #eef3f8 100%);
     padding-top:77px;
 }
 h1{
@@ -180,4 +180,52 @@ a:hover{
 }
 .open_reminder_popup{
     visibility:visible;
+}
+
+/* Input Form */
+.input_form{
+  background-color: #f3f3f3;
+  width:1500px;
+  height:800px;
+  border: 1px solid #dbe4ee;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding-top:30px;
+  font-size:20px;
+  font-family: 'Segoe UI';
+  margin: 0 auto;
+  padding-left:50px;
+}
+
+.input_header{
+  font-size:40px;
+}
+
+.input_mini{
+  padding-top:5px;
+  color:rgb(128, 128, 128);
+  font-style:italic;
+  font-size:17px;
+  padding-bottom:30px;
+}
+
+.input_textarea {
+  margin-top:10px;
+  width: 1450px;
+  padding: 16px 20px;
+  font-size: 1rem;
+  border: 1px solid;
+  border-color: #d1d9e6;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.input_btn{
+  padding: 16px 20px;
+  border: 1px solid;
+  border-color: #d1d9e6;
+  border-radius: 12px;
+  box-sizing: border-box;
+  background: rgb(119, 203, 218);
+  color:white;
 }
