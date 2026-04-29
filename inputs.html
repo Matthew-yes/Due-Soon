@@ -18,28 +18,28 @@
       <a href="calendar.html">Calendar</a>
     </div>
     <div class="spacing"></div>
-    <form id="assignmentForm">
+
+    <form id="assignmentForm" class="input_form">
+      <div class="input_header">Create New Assignments / Tests</div>
+      <div class="input_mini">Add details about your upcoming assignment or test</div>
       <fieldset>
-        <label for="type">What is due soon?</label>
-        <select id="type">
+        <label for="type">What is due soon?</label><br>
+        <select id="type" class="input_textarea">
           <option value="exam">Exam/Test</option>
           <option value="assignment">Assignment</option>
         </select>
 
         <div class="smallerspacing"></div>
-        <label for="assignment_name">Name of Assignment/Test</label>
-        <br />
-        <input id="assignment_name" type="text" required />
+        <label for="assignment_name">Name of Assignment/Test</label><br>
+        <input class="input_textarea" id="assignment_name" type="text" required />
 
         <div class="smallerspacing"></div>
-        <label for="date">Due date:</label>
-        <input type="date" id="date" required />
+        <label for="date">Due date</label><br>
+        <input class="input_textarea" type="date" id="date" required />
 
         <div class="smallerspacing"></div>
-        <label for="difficulty"
-          >How difficult do expect this assignment/test to be?</label
-        >
-        <select id="difficulty">
+        <label for="difficulty">Difficulty</label><br>
+        <select id="difficulty" class="input_textarea">
           <option value="very_easy">Very easy</option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
@@ -51,6 +51,7 @@
         <label for="time">How long do you expect to work on this</label>
         <br />
         <input
+          class="input_textarea"
           id="hours"
           type="number"
           min="0.5"
@@ -60,9 +61,10 @@
         />
 
         <div class="smallerspacing"></div>
-        <button type="submit" class="btn">Submit</button>
+        <button type="submit" class="input_btn">Submit</button>
       </fieldset>
     </form>
+
 
     <script type="module">
       import {
@@ -73,6 +75,12 @@
         addStudySessions,
       } from "./firebase.js";
       import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+      //Limit date
+      const dateInput = document.getElementById('date');
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.setAttribute('min', today);
+
 
       let currentUserId = null;
 
